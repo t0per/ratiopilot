@@ -1,3 +1,4 @@
+# Rôle : exclut du dépôt les données locales, le .env (secrets) et les binaires.
 data/
 data-test/
 .env
