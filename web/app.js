@@ -1,3 +1,4 @@
+/* Rôle : logique de l'interface (Alpine.js) : état temps réel, graphique, actions sur les torrents, réglages. */
 /* RatioPilot UI — Alpine.js + uPlot, aucune étape de build. */
 document.addEventListener('alpine:init', () => {
   Alpine.data('app', () => ({
