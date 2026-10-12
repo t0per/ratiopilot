@@ -1,3 +1,4 @@
+/* Rôle : feuille de style de l'interface, thèmes clair et sombre, adaptation mobile. */
 /* RatioPilot — palette "tableau de bord de nuit" : bleu pétrole + ambre d'instrument */
 @font-face { font-family: Barlow; font-weight: 400; font-display: swap; src: url(vendor/fonts/barlow-latin-400-normal.woff2) format('woff2'); }
 @font-face { font-family: Barlow; font-weight: 500; font-display: swap; src: url(vendor/fonts/barlow-latin-500-normal.woff2) format('woff2'); }
