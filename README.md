@@ -1,10 +1,10 @@
 # RatioPilot
 
-Réécriture légère de [JOAL](https://github.com/anthonyraymond/joal) : simule un client BitTorrent qui seed, avec une interface web en temps réel.
+Simulateur léger : simule un client BitTorrent qui seed, avec une interface web en temps réel.
 
-- **Binaire Go unique**, aucune dépendance. ~5 Mo de RAM mesurés avec 6 torrents actifs (JOAL tourne sur une JVM Java). Image Docker ~11 Mo.
-- **Compatible avec les 95 fichiers `.client` de JOAL** (qBittorrent jusqu'à 5.2.4, µTorrent, Transmission, Deluge, rTorrent…). Même format de requête, mêmes en-têtes, même génération de `peer_id` et de `key`.
-- **Trackers HTTP, HTTPS et UDP** (JOAL ne gère pas l'UDP).
+- **Binaire Go unique**, aucune dépendance. ~5 Mo de RAM mesurés avec 6 torrents actifs. Image Docker ~11 Mo.
+- **95 profils `.client` fournis** (qBittorrent jusqu'à 5.2.4, µTorrent, Transmission, Deluge, rTorrent…). Même format de requête, mêmes en-têtes, même génération de `peer_id` et de `key`.
+- **Trackers HTTP, HTTPS et UDP** (BEP 15).
 - **Interface web** : débit en direct, graphique sur 1 h, liste des torrents (pause, reprise, annonce forcée, suppression), glisser-déposer de `.torrent`, réglages, journal, thème clair/sombre, mobile.
 - **Sécurité** : mot de passe, cookie signé, protection CSRF et anti-force brute. La passkey des trackers privés n'apparaît jamais dans les messages d'erreur.
 
@@ -59,7 +59,7 @@ Le compose suppose un Traefik existant sur le réseau Docker externe `proxy` (à
 | `RP_LISTEN` | `:8080` | adresse d'écoute |
 | `HTTP_PROXY` / `HTTPS_PROXY` | — | proxy pour les annonces (ex : Gluetun) |
 
-## Fonctionnement (identique à JOAL)
+## Fonctionnement
 
 1. Un débit global est tiré au hasard entre min et max, puis renouvelé toutes les N minutes (20 par défaut).
 2. Il est réparti entre les torrents actifs selon leurs leechers : `poids = (L/(S+L))² × 100 × L`. Sans leecher, rien n'est envoyé.
@@ -78,4 +78,4 @@ Structure : `internal/emu` (émulation des clients), `internal/tracker` (HTTP/UD
 
 ## Licences
 
-Code RatioPilot : MIT. Fichiers `clients/*.client` : JOAL, Apache-2.0 (`clients/LICENSE-JOAL`). Alpine.js et uPlot : MIT. Police Barlow : SIL OFL.
+Code RatioPilot : MIT. Fichiers `clients/*.client` : Apache-2.0, © Anthony Raymond et contributeurs (`clients/LICENSE-APACHE-2.0`). Alpine.js et uPlot : MIT. Police Barlow : SIL OFL.

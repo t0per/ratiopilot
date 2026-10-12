@@ -8,9 +8,9 @@ import (
 	"strings"
 )
 
-// Tiny random-string generator for the regex subset used by JOAL .client
-// files: literals, escapes, (groups), [classes with ranges], . and {n}/{n,m}.
-// Every rune <= 0xFF is emitted as one byte (Latin-1), like JOAL does.
+// Tiny random-string generator for the regex subset used by .client
+// profile files: literals, escapes, (groups), [classes with ranges], . and {n}/{n,m}.
+// Every rune <= 0xFF is emitted as one byte (Latin-1).
 
 type node interface{ gen(b *[]byte) }
 

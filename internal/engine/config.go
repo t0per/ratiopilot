@@ -9,7 +9,7 @@ import (
 
 // Config is the user-editable configuration (data/config.json).
 type Config struct {
-	MinUploadRate       int     `json:"minUploadRate"`    // kB/s (1 kB = 1000 octets, comme JOAL)
+	MinUploadRate       int     `json:"minUploadRate"`    // kB/s (1 kB = 1000 octets, comme la plupart des clients)
 	MaxUploadRate       int     `json:"maxUploadRate"`    // kB/s
 	SimultaneousSeed    int     `json:"simultaneousSeed"` // torrents annoncés en même temps
 	Client              string  `json:"client"`           // fichier .client émulé
@@ -21,7 +21,7 @@ type Config struct {
 	AutoStart           bool    `json:"autoStart"`           // démarrer le seed au lancement
 }
 
-// DefaultConfig mirrors JOAL defaults with a recent client.
+// DefaultConfig returns safe defaults with a recent client.
 func DefaultConfig() Config {
 	return Config{
 		MinUploadRate:       30,

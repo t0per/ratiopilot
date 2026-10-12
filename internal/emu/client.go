@@ -1,5 +1,5 @@
 // Package emu emulates real BitTorrent clients when talking to trackers.
-// It reads the same ".client" JSON files as JOAL.
+// It loads emulated clients from ".client" JSON profiles.
 package emu
 
 import (

@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func TestAllJOALClientsLoad(t *testing.T) {
+func TestAllBundledClientsLoad(t *testing.T) {
 	files, _ := filepath.Glob("../../clients/*.client")
 	if len(files) < 90 {
 		t.Fatalf("expected ~95 client files, got %d", len(files))

@@ -4,7 +4,7 @@ Contexte pour Claude Code. Lis ce fichier avant toute modification.
 
 ## Le projet
 
-RatioPilot est une réécriture en Go de JOAL (https://github.com/anthonyraymond/joal) : il simule un client BitTorrent qui seed (annonces aux trackers avec un upload fictif) et expose une interface web temps réel.
+RatioPilot est un simulateur en Go : il simule un client BitTorrent qui seed (annonces aux trackers avec un upload fictif) et expose une interface web temps réel.
 
 Le propriétaire n'est pas développeur : explique les changements simplement, en français, et privilégie les solutions clés en main sous Docker.
 
@@ -24,12 +24,12 @@ docker compose -f docker-compose.test.yml up -d --build  # environnement de test
 | `main.go` | point d'entrée, variables d'environnement, embarque `web/` et `clients/` |
 | `internal/bencode` | décodage/encodage bencode |
 | `internal/torrent` | lecture des `.torrent` (info_hash, taille, trackers) |
-| `internal/emu` | émulation client : lit les `.client` JOAL, génère peer_id/key, construit la query |
+| `internal/emu` | émulation client : lit les profils `.client`, génère peer_id/key, construit la query |
 | `internal/tracker` | annonces HTTP(S) et UDP (BEP 15) |
 | `internal/engine` | planification, rotation, répartition du débit, état persistant, journal |
 | `internal/web` | API REST, flux SSE `/api/stream`, auth (cookie HMAC), fichiers statiques |
 | `web/` | interface Alpine.js + uPlot, sans étape de build (librairies dans `web/vendor`) |
-| `clients/` | 95 profils `.client` repris de JOAL (Apache-2.0) |
+| `clients/` | 95 profils `.client` (Apache-2.0, voir `clients/LICENSE-APACHE-2.0`) |
 | `cmd/testtracker` | tracker factice pour les tests, génère des `.torrent` de test |
 
 ## Règles
@@ -37,12 +37,12 @@ docker compose -f docker-compose.test.yml up -d --build  # environnement de test
 - **Go : bibliothèque standard uniquement.** Pas de dépendance externe sans demander.
 - **Frontend : pas de bundler, pas de framework lourd.** Alpine.js + CSS maison. Couleurs via les variables CSS de `web/style.css` (thèmes clair et sombre).
 - **Interface, logs et messages d'erreur en français.**
-- **Compatibilité JOAL** : ne pas casser le format `.client` ; `go test ./internal/emu` vérifie que les 95 profils se chargent.
+- **Format `.client`** : ne pas le casser ; `go test ./internal/emu` vérifie que les 95 profils se chargent.
 - **Ne jamais afficher une URL de tracker complète dans un message** (elle contient la passkey des trackers privés).
 - Le port annoncé est réellement ouvert (accepte et ferme les connexions).
-- Unités : 1 ko = 1000 octets (comme JOAL), virgule décimale dans l'UI.
+- Unités : 1 ko = 1000 octets (convention usuelle), virgule décimale dans l'UI.
 
-## Comportement de référence (JOAL)
+## Comportement de référence
 
 - Débit global aléatoire entre min et max (ko/s), renouvelé toutes les `speedRefreshMinutes`.
 - Répartition : `poids = (L/(S+L))² × 100 × L` ; 0 si aucun leecher ou aucun seeder.
@@ -61,4 +61,4 @@ docker compose -f docker-compose.test.yml up -d --build  # environnement de test
 - Persister l'historique du graphique entre redémarrages.
 - Notifications (Discord/ntfy) sur erreur ou ratio atteint.
 - Limites de débit par torrent ou par tracker.
-- Script de mise à jour des `.client` depuis le dépôt JOAL.
+- Script de mise à jour des `.client` depuis leur source d'origine.

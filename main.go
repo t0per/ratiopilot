@@ -1,4 +1,4 @@
-// RatioPilot — simulateur de seed (réécriture légère de JOAL) avec interface web.
+// RatioPilot — simulateur de seed léger avec interface web.
 package main
 
 import (

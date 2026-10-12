@@ -534,7 +534,7 @@ func (e *Engine) announcer(ctx context.Context, t *tState, cl *emu.Client, port 
 	e.notify()
 }
 
-// JOAL's PeersAwareWeightCalculator: torrents with more leechers (relative
+// peersWeight: torrents with more leechers (relative
 // to seeders) receive more of the global bandwidth; no leecher = no upload.
 func peersWeight(seeders, leechers int) float64 {
 	total := seeders + leechers
