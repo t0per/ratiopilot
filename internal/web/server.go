@@ -1,3 +1,5 @@
+// Rôle : API REST, flux temps réel (SSE), authentification et service de l'interface web.
+
 // Package web exposes the REST API, the live event stream (SSE) and the UI.
 package web
 
