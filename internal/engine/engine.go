@@ -1,3 +1,5 @@
+// Rôle : cœur du simulateur : planification des annonces, répartition du débit, rotation, état et journal.
+
 // Package engine is the seeding simulator: it schedules tracker announces,
 // dispatches a fake upload bandwidth across torrents and keeps live stats.
 package engine
