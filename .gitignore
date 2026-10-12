@@ -1,0 +1,6 @@
+data/
+data-test/
+.env
+/ratiopilot
+/testtracker
+*.tar.gz

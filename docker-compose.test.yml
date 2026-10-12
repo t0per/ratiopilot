@@ -1,0 +1,94 @@
+# Environnement de test autonome : Traefik + RatioPilot + tracker factice.
+# Aucun vrai tracker n'est contacté.
+#
+#   docker compose -f docker-compose.test.yml up -d --build
+#
+#   Via Traefik (sur la machine Docker elle-même) :
+#     Interface RatioPilot : http://ratiopilot.localhost:8088   (mot de passe : test)
+#     Tracker de test      : http://tracker.localhost:8088
+#     Tableau Traefik      : http://localhost:8089
+#   En direct depuis un autre poste du réseau (remplace l'IP si besoin) :
+#     Interface RatioPilot : http://192.168.1.1:8090
+#     Tracker de test      : http://192.168.1.1:8091
+#
+# Le tracker dépose 6 torrents de test dans data-test/torrents au premier lancement.
+# Tout effacer : docker compose -f docker-compose.test.yml down && rm -rf data-test
+
+services:
+  traefik:
+    image: traefik:v3.5
+    command:
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --providers.docker.network=rp-test
+      - --entrypoints.web.address=:80
+      - --api.insecure=true
+      - --log.level=INFO
+    ports:
+      - "8088:80"
+      - "8089:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks: [rp-test]
+
+  init-perms:
+    # prépare le dossier de données pour l'utilisateur 1000 (une seule fois)
+    image: busybox:1.37
+    command: sh -c "mkdir -p /data/torrents && chown -R 1000:1000 /data"
+    volumes:
+      - ./data-test:/data
+    network_mode: none
+
+  testtracker:
+    build:
+      context: .
+      target: testtracker
+    image: ratiopilot-testtracker:latest
+    restart: unless-stopped
+    depends_on:
+      init-perms:
+        condition: service_completed_successfully
+    environment:
+      TT_INTERVAL: "60"
+      TT_ANNOUNCE_URL: http://testtracker:6969/announce
+      TT_SEED_DIR: /seed
+      TT_SEED_COUNT: "6"
+    volumes:
+      - ./data-test/torrents:/seed
+    ports:
+      - "8091:6969"
+    networks: [rp-test]
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.tt.rule=Host(`tracker.localhost`)
+      - traefik.http.routers.tt.entrypoints=web
+      - traefik.http.services.tt.loadbalancer.server.port=6969
+
+  ratiopilot:
+    build:
+      context: .
+      target: ratiopilot
+    image: ratiopilot:latest
+    restart: unless-stopped
+    depends_on:
+      init-perms:
+        condition: service_completed_successfully
+      testtracker:
+        condition: service_started
+    environment:
+      RP_PASSWORD: test
+      TZ: Europe/Paris
+    volumes:
+      - ./data-test:/data
+    ports:
+      - "8090:8080"
+    networks: [rp-test]
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.rp.rule=Host(`ratiopilot.localhost`)
+      - traefik.http.routers.rp.entrypoints=web
+      - traefik.http.services.rp.loadbalancer.server.port=8080
+
+networks:
+  rp-test:
+    name: rp-test

@@ -1,0 +1,47 @@
+# RatioPilot — déploiement derrière ton Traefik existant.
+# Prérequis : un Traefik qui tourne déjà, sur le réseau Docker externe "proxy"
+# (adapte TRAEFIK_NETWORK, l'entrypoint et le certresolver dans .env).
+#
+#   cp .env.example .env   # puis édite les valeurs
+#   mkdir -p data && sudo chown 1000:1000 data
+#   docker compose up -d --build
+
+services:
+  ratiopilot:
+    build:
+      context: .
+      target: ratiopilot
+    image: ratiopilot:latest
+    container_name: ratiopilot
+    restart: unless-stopped
+    user: "${PUID:-1000}:${PGID:-1000}"
+    environment:
+      RP_PASSWORD: ${RP_PASSWORD:?définis RP_PASSWORD dans .env}
+      TZ: ${TZ:-Europe/Paris}
+      # Proxy HTTP optionnel pour les annonces (ex : conteneur Gluetun)
+      HTTP_PROXY: ${RP_HTTP_PROXY:-}
+      HTTPS_PROXY: ${RP_HTTP_PROXY:-}
+      NO_PROXY: localhost,127.0.0.1
+    volumes:
+      - ./data:/data
+    # Port annoncé aux trackers (réglable dans l'interface, 51413 par défaut ici).
+    # Décommente pour le rendre joignable depuis l'extérieur :
+    # ports:
+    #   - "51413:51413"
+    networks:
+      - proxy
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=${TRAEFIK_NETWORK:-proxy}
+      - traefik.http.routers.ratiopilot.rule=Host(`${RP_DOMAIN:?définis RP_DOMAIN dans .env}`)
+      - traefik.http.routers.ratiopilot.entrypoints=${TRAEFIK_ENTRYPOINT:-websecure}
+      - traefik.http.routers.ratiopilot.tls=true
+      - traefik.http.routers.ratiopilot.tls.certresolver=${TRAEFIK_CERTRESOLVER:-letsencrypt}
+      - traefik.http.services.ratiopilot.loadbalancer.server.port=8080
+      # Le flux temps réel (SSE) ne doit pas être bufferisé ni compressé :
+      # n'ajoute pas de middleware "compress" sur ce routeur.
+
+networks:
+  proxy:
+    name: ${TRAEFIK_NETWORK:-proxy}
+    external: true
