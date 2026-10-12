@@ -76,6 +76,26 @@ go run ./cmd/testtracker          # tracker factice sur :6969
 
 Structure : `internal/emu` (émulation des clients), `internal/tracker` (HTTP/UDP), `internal/engine` (planification, débit), `internal/web` (API + flux SSE), `web/` (interface Alpine.js + uPlot, sans build).
 
+## Structure du dépôt
+
+| Fichier / dossier | Rôle |
+|---|---|
+| `main.go` | point d'entrée : variables d'environnement, chargement des données, lancement |
+| `internal/engine/` | cœur : planification des annonces, répartition du débit, rotation, état, config |
+| `internal/emu/` | émulation des clients BitTorrent (profils `.client`, peer_id, key, requête) |
+| `internal/tracker/` | annonces HTTP(S) et UDP vers les trackers |
+| `internal/torrent/` | lecture des fichiers `.torrent` |
+| `internal/bencode/` | format bencode (torrents et réponses des trackers) |
+| `internal/web/` | API REST, flux temps réel (SSE), authentification, service de l'interface |
+| `web/` | interface (HTML, CSS, JavaScript Alpine.js + uPlot), sans étape de build |
+| `clients/` | 95 profils de clients BitTorrent émulés |
+| `cmd/testtracker/` | tracker factice pour tester sans toucher à un vrai tracker |
+| `Dockerfile` | image finale (binaire seul) et image du tracker de test |
+| `docker-compose.yml` | déploiement de production derrière Traefik |
+| `docker-compose.test.yml` | environnement de test isolé |
+| `.env.example` | modèle des variables de déploiement |
+| `CLAUDE.md` | contexte du projet pour Claude Code |
+
 ## Licences
 
 Code RatioPilot : MIT. Fichiers `clients/*.client` : Apache-2.0, © Anthony Raymond et contributeurs (`clients/LICENSE-APACHE-2.0`). Alpine.js et uPlot : MIT. Police Barlow : SIL OFL.
