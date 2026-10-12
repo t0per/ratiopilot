@@ -1,3 +1,4 @@
+# Rôle : exclut les données, le .env et la doc du contexte de build Docker.
 data
 data-test
 *.md
