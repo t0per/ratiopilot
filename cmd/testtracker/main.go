@@ -1,3 +1,5 @@
+// Rôle : tracker factice pour les tests, aucun vrai tracker n'est contacté.
+
 // testtracker — tracker BitTorrent factice (HTTP + UDP) pour tester RatioPilot
 // sans toucher à un vrai tracker. Il journalise chaque annonce et peut générer
 // des fichiers .torrent de test pointant vers lui-même.
