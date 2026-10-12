@@ -1,3 +1,5 @@
+// Rôle : envoi des annonces aux trackers HTTP(S) et UDP (BEP 15) et lecture des réponses.
+
 // Package tracker sends announces to HTTP(S) and UDP trackers.
 package tracker
 
