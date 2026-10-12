@@ -1,3 +1,4 @@
+# Rôle : construit l'image finale (binaire seul, ~12 Mo) et l'image du tracker de test.
 # ---------- build ----------
 FROM golang:1.24-alpine AS build
 WORKDIR /src
