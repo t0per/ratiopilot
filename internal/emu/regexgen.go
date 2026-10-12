@@ -1,3 +1,5 @@
+// Rôle : génère les peer_id et clés aléatoires décrits par une expression régulière.
+
 package emu
 
 import (
