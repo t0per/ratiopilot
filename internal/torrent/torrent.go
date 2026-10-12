@@ -1,3 +1,5 @@
+// Rôle : extrait d'un .torrent l'info_hash, la taille et la liste des trackers.
+
 // Package torrent reads .torrent metainfo files.
 package torrent
 
