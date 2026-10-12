@@ -1,3 +1,5 @@
+// Rôle : lecture/écriture du format bencode (fichiers .torrent et réponses des trackers).
+
 // Package bencode implements a minimal bencode decoder/encoder (BEP 3).
 package bencode
 
