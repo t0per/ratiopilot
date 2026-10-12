@@ -1,3 +1,5 @@
+// Rôle : réglages (débits, client, nombre de torrents…), valeurs par défaut, validation et sauvegarde de config.json.
+
 package engine
 
 import (
