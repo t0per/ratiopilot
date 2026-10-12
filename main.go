@@ -1,3 +1,5 @@
+// Rôle : point d'entrée : lit les variables d'environnement, charge les données et lance moteur et serveur web.
+
 // RatioPilot — simulateur de seed léger avec interface web.
 package main
 
