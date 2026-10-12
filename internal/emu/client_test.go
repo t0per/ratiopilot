@@ -1,3 +1,5 @@
+// Rôle : vérifie que tous les profils .client fournis se chargent et produisent une requête valide.
+
 package emu
 
 import (
