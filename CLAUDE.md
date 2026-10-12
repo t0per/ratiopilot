@@ -1,5 +1,7 @@
 # CLAUDE.md — RatioPilot
 
+> Contexte du projet lu par Claude Code : architecture, règles de code et commandes utiles.
+
 Contexte pour Claude Code. Lis ce fichier avant toute modification.
 
 ## Le projet
