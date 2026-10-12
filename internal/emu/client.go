@@ -1,3 +1,5 @@
+// Rôle : émulation d'un client BitTorrent (en-têtes, peer_id, key, requête d'annonce) d'après un profil .client.
+
 // Package emu emulates real BitTorrent clients when talking to trackers.
 // It loads emulated clients from ".client" JSON profiles.
 package emu
