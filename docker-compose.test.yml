@@ -1,3 +1,4 @@
+# Rôle : environnement de test isolé (Traefik + RatioPilot + tracker factice).
 # Environnement de test autonome : Traefik + RatioPilot + tracker factice.
 # Aucun vrai tracker n'est contacté.
 #
