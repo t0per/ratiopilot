@@ -1,3 +1,4 @@
+# Rôle : déploiement en production derrière un Traefik existant.
 # RatioPilot — déploiement derrière ton Traefik existant.
 # Prérequis : un Traefik qui tourne déjà, sur le réseau Docker externe "proxy"
 # (adapte TRAEFIK_NETWORK, l'entrypoint et le certresolver dans .env).
